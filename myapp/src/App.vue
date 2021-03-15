@@ -9,9 +9,11 @@
             <input type="text" v-model="info">
             <button v-on:click="handlerClick">添加</button>
             <ul>
-                <todo-item v-for="item in list" :key="item">
-                  <span slot="item" style="font-size: 20px">{{item}}</span>
-                </todo-item>
+              <todo-item v-for="item in list" :key="item">
+                <template v-slot:item>
+                  <span style="font-size: 20px">{{item}}</span>
+                </template>
+              </todo-item>
             </ul>
         </div>
     </div>
