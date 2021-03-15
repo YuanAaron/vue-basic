@@ -9,7 +9,9 @@
             <input type="text" v-model="info">
             <button v-on:click="handlerClick">添加</button>
             <ul>
-                <todo-item v-for="item in list" :key="item" :item="item"></todo-item>
+                <todo-item v-for="item in list" :key="item">
+                  <span slot="item" style="font-size: 20px">{{item}}</span>
+                </todo-item>
             </ul>
         </div>
     </div>
@@ -17,6 +19,8 @@
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
+
+//TodoItem相当于App的一个子组件
 import TodoItem from './components/TodoItem.vue'
 
 export default {

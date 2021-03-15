@@ -1,5 +1,7 @@
-<template>
-    <li class="item">{{item}}</li>
+<template class="item">
+    <li  class="item">
+        <slot name="item"></slot>
+    </li>
 </template>
 
 <script>
