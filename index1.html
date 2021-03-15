@@ -1,0 +1,41 @@
+<html>
+<head>
+</head>
+<body>
+    <div id=app>
+        <div>
+            <input type="text" v-model="info">
+            <button v-on:click="handlerClick">添加</button>
+            <ul>
+                <todo-item v-for="item in list" :item="item"></todo-item>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('todo-item', {
+            //props: ['item'],
+            props: {
+                item: String
+            },
+            template: '<li>{{item}}</li>'
+        })
+        var vm = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    msg: "hello vue!",
+                    info: '',
+                    list: []
+                }
+            },
+            methods: {
+                handlerClick() {
+                    this.list.push(this.info);
+                    this.info='';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

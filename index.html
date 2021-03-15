@@ -1,0 +1,43 @@
+<html>
+<head>
+</head>
+<body>
+    <div id=app>
+        {{msg}}
+        <div>
+            <!--v-model指令: 双向绑定-->
+            <input type="text" v-model="info">
+            <!--v-on指令：v-on:click或@click-->
+            <button v-on:click="handlerClick">添加</button>
+            <!--v-for指令-->
+            <ul>
+                <li v-for="item in list">
+                    {{item}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    msg: "hello vue!",
+                    info: '',
+                    list: []
+                }
+            },
+            methods: {
+                handlerClick() {
+                    //this不能少
+                    console.log(this.info);
+                    this.list.push(this.info);
+                    //添加完后，清空输入框数据
+                    this.info='';
+                }
+            }
+        })
+    </script>
+</body>
+</html>
