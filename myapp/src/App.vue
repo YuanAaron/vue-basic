@@ -10,8 +10,10 @@
             <button v-on:click="handlerClick">添加</button>
             <ul>
               <todo-item v-for="item in list" :key="item">
-                <template v-slot:item>
-                  <span style="font-size: 20px">{{item}}</span>
+                <!--2、接收传过来的checked状态-->
+                <template v-slot:item="itemProps">
+                  <!--3、根据checked的取值改变颜色-->
+                  <span :style="{fontSize: '20px',color: itemProps.checked ? 'red' : 'blue'}">{{item}}</span>
                 </template>
               </todo-item>
             </ul>
