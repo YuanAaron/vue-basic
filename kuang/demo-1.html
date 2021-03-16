@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{message}}
+
+        <span v-bind:title="message">
+            鼠标悬停几秒钟查看此处动态绑定的提示信息!
+        </span>
+
+        <ul>
+            <li v-if="type==='A'">A</li>
+            <li v-else-if="type==='B'">B</li>
+            <li v-else>C</li>
+
+            <li v-for="(item,index) in items">
+                {{item.name + '-' + item.age + '-' + index}}
+            </li>
+        </ul>
+
+        <button v-on:click="sayHi">click me!</button>
+        <div style="width:300px; height:300px;" v-on:mousemove="move">{{x}},{{y}}</div>
+
+        <input type="text" placeholder="edit me" v-model="info"> 
+        <p>
+            输入的内容为：{{info}}
+        </p>
+
+        <!--多行文本-->
+        <textarea placeholder="add multiple lines" v-model="multiMessage"></textarea>
+        <br/>multiple message is:
+        <p style="white-space: pre-line;">
+            {{ multiMessage }}
+        </p>
+        
+        <!--html中的单选框必须有相同的name-->
+        <input type="radio" name="sex" value="man">man
+        <input type="radio" name="sex" value="woman" checked>woman
+
+        <!--Vue中的单选框可以不写name，但必须写value-->
+        <input type="radio" value="red" v-model="selected">red
+        <input type="radio" value="green" v-model="selected">green
+        <input type="radio" value="blue" v-model="selected">blue
+        <p>
+            最美的颜色是：{{selected}}
+        </p>
+
+        <!--单个复选框-->
+        <input type="checkbox" v-model="selectedName">
+        <p>
+            {{selectedName}}
+        </p>
+
+        <!--多个复选框-->
+        <input type="checkbox" value="Jack" v-model="selectedNames">Jack
+        <input type="checkbox" value="John" v-model="selectedNames">John
+        <input type="checkbox" value="Mike" v-model="selectedNames">Mike
+        <p>
+            Checked names: {{selectedNames}}
+        </p>
+
+        <!--单选下拉框-->
+        <select v-model="singleSelected">
+            <option disabled value=''>--请选择--</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>singleSelected: {{singleSelected}}</span>
+
+        
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                message: 'Hello Vue!',
+                type: 'A',
+                items: [{
+                    name: 'zhangsan',
+                    age: 23
+                },{
+                    name: 'wangwu',
+                    age: 25
+                }],
+                x: 0,
+                y: 0,
+                info: '',
+                multiMessage: '',
+                //默认值一般是其中一个单选按钮的value值，否则相当于空字符串
+                selected: 'blue',
+                //单个复选框绑定到布尔值
+                selectedName: true,
+                //多个复选框，绑定到同一个数组
+                selectedNames: [],
+                singleSelected: ''
+            },
+            methods: {
+                sayHi: function() {
+                    alert(this.message);
+                },
+                move: function(e) {
+                    this.x = e.offsetX;
+                    this.y = e.offsetY;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
