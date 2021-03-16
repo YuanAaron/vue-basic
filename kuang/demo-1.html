@@ -78,7 +78,13 @@
         <demo1 v-for="item in items" v-bind:it='item'></demo1>
         <demo2 v-for="item in items" v-bind:name='item.name' v-bind:age='item.age'></demo2>
 
-    
+        <!--两者的异同:
+        相同点: 刷新页面都会变化
+        不同点: 在console中多次调用,vm.getCurrentTime1()一直在变;
+        vm.getCurrentTime2不变,改变vm.message后,首次调用vm.getCurrentTime2改变,之后又不再变化,这类似于缓存
+        --> 
+        <li>{{getCurrentTime1()}}</li>
+        <li>{{getCurrentTime2}}</li>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -127,6 +133,17 @@
                 move: function(e) {
                     this.x = e.offsetX;
                     this.y = e.offsetY;
+                },
+                getCurrentTime1: function() {
+                    this.message;
+                    return Date.now();
+                }
+            },
+            //计算属性: 将计算得到的结果缓存在属性中,即将不经常变化的计算结果进行缓存,以节约系统开销
+            computed: {
+                getCurrentTime2: function() {
+                    this.message;
+                    return Date.now();
                 }
             }
         })
