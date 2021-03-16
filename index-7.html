@@ -8,7 +8,9 @@
 </head>
 <body>
     <div id="app">
-        <todo-list></todo-list>
+        <todo-list>
+            <todo-item @delete='handleDelete' v-for="item in list" :title="item.title" :del="item.del"></todo-item>
+        </todo-list>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
@@ -40,22 +42,27 @@
             }
         })
         Vue.component("todo-list", {
-            //<todo-item>直接写在了<todo-list>组件里面，这并不是很合理。因为我们希望使用<todo-list>的开发者能够自行传入需要渲染的<todo-item>，
-            //而不是说把<todo-item>直接写死在<todo-list>中，修改后的代码见index-7.html
+            //默认插槽
             template: `
                 <ul>
-                    <todo-item @delete='handleDelete' v-for="item in list" :title="item.title" :del="item.del"></todo-item>
+                    <slot></slot>
                 </ul>`,
             data: function() {
                 return {
-                    list: [{
+                    
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                list: [{
                     title: '课程2',
                     del: false
-                    },{
-                        title: '课程3',
-                        del: true
-                    }]
-                }
+                },{
+                    title: '课程3',
+                    del: true
+                }]
             },
             methods: {
                 //val即为传递出来this.title
@@ -63,9 +70,6 @@
                     console.log("handleDelete",val);
                 }
             }
-        })
-        var vm = new Vue({
-            el: '#app'
         })
     </script>
 </body>
