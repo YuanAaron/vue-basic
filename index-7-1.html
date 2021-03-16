@@ -9,7 +9,22 @@
 <body>
     <div id="app">
         <todo-list>
-            <todo-item @delete='handleDelete' v-for="item in list" :title="item.title" :del="item.del"></todo-item>
+            <!--默认插槽：Vue2.6及以后-->
+            <template v-slot>
+                <todo-item @delete='handleDelete' v-for="item in list" :title="item.title" :del="item.del">
+                <!--具名插槽：Vue2.6以前-->
+                <!-- <span slot='pre-icon'>前置图标</span>
+                <span slot='suf-icon'>后置图标</span> -->
+
+                <!--具名插槽：Vue2.6及以后-->
+                <template v-slot:pre-icon>
+                    <span>前置图标</span>
+                </template>
+                <template v-slot:suf-icon>
+                    <span>后置图标</span>
+                </template>
+            </todo-item>
+            </template>
         </todo-list>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -24,11 +39,12 @@
                 }
             },
             //v-on:click也可以写成@click
-            //需求：添加一个前置图标和一个后置图标
             template: `
                 <li>
+                    <slot name='pre-icon'></slot>
                     <span v-if="!del">{{title}}</span>
                     <span v-else style="text-decoration: line-through;">{{title}}</span>
+                    <slot name='suf-icon'></slot>
                     <button v-show="!del" v-on:click='handleClick'>删除</button>
                 </li>`,
             data: function() {
