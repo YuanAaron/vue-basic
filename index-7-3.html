@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <todo-list>
+            <!--默认插槽：Vue2.6及以后-->
+            <template v-slot>
+                <todo-item @delete='handleDelete' v-for="item in list" :title="item.title" :del="item.del">
+                <!--具名插槽：Vue2.6以前-->
+                <!-- <span slot='pre-icon'>前置图标</span>
+                <span slot='suf-icon'>后置图标</span> -->
+
+                <!--具名插槽：Vue2.6及以后-->
+                <!--作用域插槽的特点：可以接收子组件传递的值，简单来说，根据子组件传递的不同的值，
+                    我们呈现不同的内容（比如大于0.5显示红色前置图标，小于等于0.5显示蓝色前置图标）-->
+                <!--2-->
+                <template v-slot:pre-icon='{value}'>
+                    <!--在父组件中拿到了子组件的值-->
+                    <!--3-->
+                    <span :style="{color: value > 0.5 ? 'red' : 'blue'}">前置图标 {{value}}</span>
+                </template>
+            </todo-item>
+            </template>
+        </todo-list>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        //组件的名称(todo-item、todo-list)要全局唯一
+        Vue.component('todo-item',{
+            props: {
+                title: String,
+                del: {
+                    type: Boolean,
+                    default: false
+                }
+            },
+            //v-on:click也可以写成@click
+            //插槽的默认值：如果没有给插槽传递内容，可以给它一个默认值
+            template: `
+                <li>
+                    <slot name='pre-icon' :value='value'></slot>
+                    <span v-if="!del">{{title}}</span>
+                    <span v-else style="text-decoration: line-through;">{{title}}</span>
+                    <slot name='suf-icon'>😄</slot>
+                    <button v-show="!del" v-on:click='handleClick'>删除</button>
+                </li>`,
+            //每个todo-item中维护了一个value值，接下来将value传递出去就需要使用作用域插槽
+            //1
+            data: function() {
+                return {
+                    value: Math.random()
+                }
+            },
+            methods: {
+                handleClick: function() {
+                    console.log('点击了删除按钮!');
+                    //抛出删除事件
+                    this.$emit('delete', this.title);
+                }
+            }
+        })
+        Vue.component("todo-list", {
+            //默认插槽
+            template: `
+                <ul>
+                    <slot></slot>
+                </ul>`,
+            data: function() {
+                return {
+                    
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                list: [{
+                    title: '课程2',
+                    del: false
+                },{
+                    title: '课程3',
+                    del: true
+                }]
+            },
+            methods: {
+                //val即为传递出来this.title
+                handleDelete: function(val) {
+                    console.log("handleDelete",val);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
